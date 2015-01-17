@@ -1,0 +1,33 @@
+{
+  "name": "es6-angularjs-predix-seed",
+  "version": "0.0.1",
+  "authors": [
+    "Spratley",
+    "Jonnie <jonnie.spratley@ge.com>"
+  ],
+  "description": "Example es6 angular app",
+  "main": "dist/app.js",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "traceur": "~0.0.81",
+    "traceur-runtime": "~0.0.81",
+    "angular": "~1.3.9",
+    "jquery": "~2.1.3",
+    "angular-route": "~1.3.9",
+    "es6-module-loader": "~0.11.2"
+  },
+  "resolutions": {
+    "traceur": "~0.0.81"
+  }
+}
