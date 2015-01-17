@@ -23,10 +23,15 @@ app.listen(app.get('port'), app.get('host'), function() {
 	console.log('Node app is running at:' + host + ':' + port);
 });
 
-/*
+var cloudServices = null;
+var dbcreds = null;
+
+//Test if services
 if(process.env.VCAP_SERVICES){
-  var services = JSON.parse(process.env.VCAP_SERVICES);
-  var dbcreds = services['mongodb'][0].credentials;
+  cloudServices = JSON.parse(process.env.VCAP_SERVICES);
+
+  console.warn('cloud services', services);
+  //var dbcreds = services['mongodb'][0].credentials;
 }
 
 if(dbcreds){
@@ -38,6 +43,7 @@ if(dbcreds){
 console.log("attempting to connect to mongodb");
 if(process.env.MONGODB_URL){
   mongoose.connect(process.env.MONGODB_URL);
+
 } else {
 //  mongoose.connect("127.0.0.1", "myappdb", 27017);
-}*/
+}
