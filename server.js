@@ -23,7 +23,7 @@ app.listen(app.get('port'), app.get('host'), function() {
 	console.log('Node app is running at:' + host + ':' + port);
 });
 
-
+/*
 if(process.env.VCAP_SERVICES){
   var services = JSON.parse(process.env.VCAP_SERVICES);
   var dbcreds = services['mongodb'][0].credentials;
@@ -40,4 +40,4 @@ if(process.env.MONGODB_URL){
   mongoose.connect(process.env.MONGODB_URL);
 } else {
 //  mongoose.connect("127.0.0.1", "myappdb", 27017);
-}
+}*/
