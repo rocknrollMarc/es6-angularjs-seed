@@ -4,13 +4,13 @@ var traceur = require('gulp-traceur');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var rimraf = require('gulp-rimraf');
-var gulpTraceurCmdline = require('gulp-traceur-cmdline');
 var usemin = require('gulp-usemin');
 var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-minify-html');
 var minifyCss = require('gulp-minify-css');
 var rev = require('gulp-rev');
-
+var to5 = require('gulp-6to5');
+var express = require('express');
 
 var config = {
 	app: 'app/',
@@ -19,16 +19,17 @@ var config = {
 
 //Task variables
 var EXPRESS_PORT = 4000;
-var DIST_ROOT = __dirname + '/dist'
+var DIST_ROOT = __dirname + '/dist';
 var BOWER_ROOT = __dirname + '/';
 var EXPRESS_ROOT = __dirname + '/app';
 var LIVERELOAD_PORT = 35729;
 var lr;
 
 function startExpress() {
-	var express = require('express');
 	var app = express();
 	app.use(require('connect-livereload')());
+	
+	//app.use(express.static(DIST_ROOT));
 	
 	app.use(express.static(EXPRESS_ROOT));
 	app.listen(EXPRESS_PORT, function(){
@@ -52,28 +53,26 @@ function notifyLivereload(event) {
 
 //Clean task - Cleans dist directory
 gulp.task('clean', function (cb) {
-	return gulp.src(DIST_ROOT, { read: false })
-	.pipe(rimraf({ force: true }));
+	return gulp.src(DIST_ROOT, { read: false }).pipe(rimraf({ force: true }));
 });
 
-//Compile task - Compiles es6 to es5
-gulp.task('compile', function () {
+//Build task - Compiles es6 to es5
+gulp.task('build', function () {
+	
+	gulp.src(config.app + '*.js')
+	.pipe(to5())
+	.pipe(gulp.dest('dist'));
+	
 	return gulp.src(config.app + 'scripts/**/*.js')
 	.pipe(sourcemaps.init())
-	.pipe(traceur())
-	.pipe(concat('all.js'))
+	.pipe(to5())
+	.pipe(concat('scripts.js'))
+	//.pipe(rev())
 	.pipe(sourcemaps.write('.'))
+	
 	.pipe(gulp.dest('dist'));
 });
 
-//Cmd task - Another version of compiling es6 to es5
-gulp.task('cmd',function() {
-	gulp.src(config.app +'bootstrapper.js').pipe(gulpTraceurCmdline('/usr/local/bin/traceur', {
-		modules : 'inline',
-		out     : './dist/bootstrapper.js',
-		debug   : true
-	}))
-});
 
 //Usemin task - Handles mini and concating scripts
 gulp.task('usemin', function () {
@@ -86,9 +85,14 @@ gulp.task('usemin', function () {
 	.pipe(gulp.dest(config.dist));
 });
 
-//Default task - Handles compiling and starting dev server
-gulp.task('default', ['clean', 'compile', 'usemin'], function () {
+//Serve task - Handles livereload server.
+gulp.task('serve', ['build'], function () {
 	startExpress();
 	startLivereload();
 	gulp.watch('app/**/*.*', notifyLivereload);
+});
+
+//Default task - Handles compiling and starting dev server
+gulp.task('default', ['clean', 'build', 'usemin'], function () {
+	
 });

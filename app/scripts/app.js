@@ -1,32 +1,16 @@
 //export var appControllers = angular.module('appControllers', []);
 //export var appRouter = angular.module('appRouter', ['ngRoute', appControllers.name]);
-export var app = angular.module('predixApp', ['ngRoute']);
+import router from './router';
+export var app = angular.module('es6PredixApp', ['ngRoute']);
 
+export function bootstrap(){
 
-class View {
-	constructor(options) {
-		this.model = options.model;
-		this.template = options.template;
-	}
+	//Mount the router
+	router(app);
 
-	render() {
-		return _.template(this.template, this.model.toObject());
-	}
-}
-
-class LogView extends View {
-	render() {
-		var compiled = super();
-		console.log(compiled);
-	}
-}
-
-class Model {
-	constructor(properties) {
-		this.properties = properties;
-	}
-
-	toObject() {
-		return this.properties;
-	}
+	//Bootstrap the app
+	angular.element(document).ready(function() {
+		console.warn('Bootstrapping es6 app', app);
+		angular.bootstrap(document, [app.name]);
+	});
 }

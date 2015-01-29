@@ -2,17 +2,19 @@
 //import controllers from 'scripts/controllers/module';
 //import ngRoute from 'bower_components/angular-route/angular-route.min';
 //Import controllers
-import {HomeController} from 'scripts/controllers/home';
-import {Page1Controller} from 'scripts/controllers/page1';
-import {Page2Controller} from 'scripts/controllers/page2';
+import {HomeController} from 'controllers/home';
+import {Page1Controller} from 'controllers/page1';
+import {Page2Controller} from 'controllers/page2';
+import {DataService} from 'services/dataservice';
 
 export default function mount(module){
-	console.log('mounting routes on', module);
+	console.warn('mounting routes on', module.name);
 
 	//Add controllers to appControllers module
 	module.controller('HomeController', HomeController);
 	module.controller('Page1Controller', Page1Controller);
 	module.controller('Page2Controller', Page2Controller);
+	module.service('DataService', DataService);
 
 	//Configure the modules router
 	module.config(['$routeProvider', function($routeProvider) {
@@ -33,7 +35,7 @@ export default function mount(module){
 				controller: 'Page2Controller'
 			})
 			.otherwise({
-				redirectTo: '/'
+				redirectTo: '/home'
 			});
 	}]);
 }
