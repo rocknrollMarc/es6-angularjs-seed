@@ -4,7 +4,7 @@
   "description": "This is an example es6 angular app.",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "gulp test",
+    "test": "gulp",
     "start": "node server"
   },
   "repository": {
